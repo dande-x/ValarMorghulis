@@ -1,0 +1,76 @@
+CREATE DATABASE  IF NOT EXISTS `vmdb`;
+USE `vmdb`;
+
+---创建一个专门管理的用户，赋予仅管理该数据库的权限
+
+GRANT ALL ON cuthanddb TO 'vmdbadmin'@'%' IDENTIFIED BY '';
+FLUSH PRIVILEGE;
+
+DROP TABLE IF EXISTS `users`;
+---此表存储用户信息
+CREATE TABLE `users` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  `email` VARCHAR(50) NOT NULL UNIQUE,
+  `name` CHAR(16) NOT NULL DEFAULT "用户", 
+  `password` CHAR(32) NOT NULL,
+  `sex` ENUM("男","女","保密") NOT NULL DEFAULT "保密",
+  `udeclare` VARCHAR(60) NOT NULL DEFAULT "个人说明。", 
+  `avatar` VARCHAR(50) NOT NULL DEFAULT "url",  
+  `regtime` TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  
+)ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `emails`;
+---此表存储邮箱验证码
+CREATE TABLE `emails`(
+	`email` VARCHAR(32) NOT NULL,
+	`code` VARCHAR(20) NOT NULL,
+	`type` ENUM(0,1,2) NOT NULL,
+	`time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	UNIQUE KEY (`email`,`type`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+---type 0:注册 1:修改密码 2:忘记密码 
+
+DROP TABLE IF EXISTS `messages`;
+---此表存储消息记录
+CREATE TABLE `messages`(
+	`id` INT UNSIGNED NOT NULL ,
+	`uid` INT UNSIGNED NOT NULL,
+	`tid` INT UNSIGNED NOT NULL,
+	`type` enum('TEXT','IMAGE','FILE','FRIEND') DEFAULT NULL,
+	`content` VARCHAR(256) DEFAULT NULL,
+	`sendtime` TIMESTAMP,
+	INDEX (`tid`)
+)ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `unreadmessages`;
+---此表存储未被读取的消息
+CREATE TABLE `unreadmessages`(
+	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+	`uid` INT UNSIGNED NOT NULL,
+	`tid` INT UNSIGNED NOT NULL,
+	`type` ENUM('TEXT','IMAGE','FILE','FRIEND') NOT NULL,
+	`content` VARCHAR(256) DEFAULT "",
+	`sendtime` TIMESTAMP NOT NULL,
+	INDEX (`tid`)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `online`;
+---此表存储当前在线用户
+CREATE TABLE `online`(
+	`uid` INT UNSIGNED NOT NULL,
+	`ltime` TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
+	UNIQUE KEY  (`uid`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `friend`;
+
+CREATE TABLE `friends`(
+  `userId` INT UNSIGNED NOT NULL,
+  `friendId` INT UNSIGNED NOT NULL,
+  `remarkName` CHAR(16) DEFAULT '',
+  `ctime` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX (`userId`);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+---好友，双方互为好友时，是两条记录。
