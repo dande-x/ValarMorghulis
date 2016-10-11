@@ -1,13 +1,20 @@
 CREATE DATABASE  IF NOT EXISTS `vmdb`;
 USE `vmdb`;
 
----创建一个专门管理的用户，赋予仅管理该数据库的权限
+-- 创建一个专门管理的用户，赋予仅管理该数据库的权限
 
 GRANT ALL ON cuthanddb TO 'vmdbadmin'@'%' IDENTIFIED BY '';
 FLUSH PRIVILEGE;
 
 DROP TABLE IF EXISTS `users`;
----此表存储用户信息
+DROP TABLE IF EXISTS `online`;
+DROP TABLE IF EXISTS `friend`;
+DROP TABLE IF EXISTS `unreadmessages`;
+DROP TABLE IF EXISTS `messages`;
+DROP TABLE IF EXISTS `emails`;
+DROP TABLE IF EXISTS `version`;
+
+-- 此表存储用户信息
 CREATE TABLE `users` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
   `email` VARCHAR(50) NOT NULL UNIQUE,
@@ -21,8 +28,8 @@ CREATE TABLE `users` (
 )ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
-DROP TABLE IF EXISTS `emails`;
----此表存储邮箱验证码
+
+-- 此表存储邮箱验证码
 CREATE TABLE `emails`(
 	`email` VARCHAR(32) NOT NULL,
 	`code` VARCHAR(20) NOT NULL,
@@ -30,10 +37,10 @@ CREATE TABLE `emails`(
 	`time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 	UNIQUE KEY (`email`,`type`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
----type 0:注册 1:修改密码 2:忘记密码 
+-- type 0:注册 1:修改密码 2:忘记密码 
 
-DROP TABLE IF EXISTS `messages`;
----此表存储消息记录
+
+-- 此表存储消息记录
 CREATE TABLE `messages`(
 	`id` INT UNSIGNED NOT NULL ,
 	`uid` INT UNSIGNED NOT NULL,
@@ -44,8 +51,8 @@ CREATE TABLE `messages`(
 	INDEX (`tid`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `unreadmessages`;
----此表存储未被读取的消息
+
+-- 此表存储未被读取的消息
 CREATE TABLE `unreadmessages`(
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 	`uid` INT UNSIGNED NOT NULL,
@@ -56,15 +63,14 @@ CREATE TABLE `unreadmessages`(
 	INDEX (`tid`)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `online`;
----此表存储当前在线用户
+
+-- 此表存储当前在线用户
 CREATE TABLE `online`(
 	`uid` INT UNSIGNED NOT NULL,
 	`ltime` TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
 	UNIQUE KEY  (`uid`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `friend`;
 
 CREATE TABLE `friends`(
   `userId` INT UNSIGNED NOT NULL,
@@ -73,4 +79,23 @@ CREATE TABLE `friends`(
   `ctime` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   INDEX (`userId`);
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
----好友，双方互为好友时，是两条记录。
+-- 好友，双方互为好友时，是两条记录。
+
+
+-- 版本表
+CREATE TABLE  `version`(
+`id` TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+-- 客户端类型
+`app_id` TINYINT UNSIGNED NOT NULL DEFAULT '0',
+-- 大版本id 
+`version_id`  TINYINT UNSIGNED NOT NULL DEFAULT '0',
+-- 小版本号
+`version_mini` TINYINT UNSIGNED NOT NULL DEFAULT '0',
+-- 版本描述
+`version_content` VARCHAR(200) NOT NULL,
+-- 是否升级 0 不升级 1 升级  2强制升级
+`type` TINYINT(2) UNSIGNED NOT NULL ,
+`url` VARCHAR(80) DEFAULT NULL,
+`ctime`  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
