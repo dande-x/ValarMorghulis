@@ -100,4 +100,3 @@
     searchFilter.init();
 
 })();
-</script>
