@@ -1,5 +1,4 @@
 (function() {
-
     var chat = {
         messageToSend: '',
         messageResponses: [

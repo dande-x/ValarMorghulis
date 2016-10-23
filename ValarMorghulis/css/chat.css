@@ -11,15 +11,26 @@ body {
     padding: 40px 0;
     color: white;
 }
+    
 .container {
     margin: 0 auto;
     width: 750px;
     background: #444753;
     border-radius: 5px;
 }
+ .list{ list-style: none;}
+
+
 .people-list {
     width: 260px;
     float: left;
+    
+    padding: 30px 30px 20px;
+    border-bottom: 2px solid white;
+    overflow-y: scroll;
+    height: 860px;
+    list-style:none;
+    
 }
 .people-list .search {
     padding: 20px;
@@ -199,3 +210,11 @@ body {
     clear: both;
     height: 0;
 }
+
+.choose{
+	color: aqua;
+}
+.friend{
+	
+}
+
