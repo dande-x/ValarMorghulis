@@ -62,7 +62,7 @@
         </div>
         <!-- end chat-header -->
 
-        <div class="chat-history ">
+        <div class="chat-history " id="messagesDiv">
             <ul id="messages">
             	<!--
                 	下面是聊天信息
@@ -99,6 +99,6 @@
 
         <div class="chat-message clearfix">
         <textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"></textarea>
-        <button id="sendButton">发送</button>
+        <button id="sendButton" onclick="sendMessage()">发送</button>
 </body>
 </html>

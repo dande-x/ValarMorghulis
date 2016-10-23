@@ -8,7 +8,11 @@ function showMessage(elem) {
 	elem.className += ' choose ';
 
 	delMessages();
-	addMessages();
+	
+	//网络请求，获取聊天数据
+	
+	var data;
+	addMessages(data);
 
 }
 
@@ -23,14 +27,34 @@ function delMessages() {
 function addMessages(data) {
 	var messages = document.getElementById("messages");
 	for(var i = 0; i < data.length; i++) {
-
-		var li = document.createElement("li");
-		var div = document.createElement("div");
-
+		if(data[i].sendid=其他人){
+			var li=createOtherMessage(data[i]);
+			messages.appendChild(li);
+		}else{
+			var li=createMyMessage(data[i]);
+			messages.appendChild(li);
+		}
 	}
+	
 } 
 
-function createMyMessage(message) {
+function sendMessage(){
+	var content =document.getElementById("message-to-send");
+	var data=Array;
+	data['sendName']="me";
+	data['sendTime']="today";
+	data['content']=content.value;
+	content.value="";
+	
+	document.getElementById('messagesDiv').scrollTop =document.getElementById('messagesDiv').scrollHeight+100;
+	//ajaxJson(data);
+	var messages = document.getElementById("messages");
+	var message=createMyMessage(data);
+	messages.appendChild(message);
+}
+
+
+function createOtherMessage(message) {
 	var li = document.createElement("li");
 	var div1=document.createElement("div");
 	div1.className+=' message-data ';
@@ -47,10 +71,11 @@ function createMyMessage(message) {
 	div2.innerHTML=message.content;
 	li.appendChild(div1);
 	li.appendChild(div2);
+	return li;
 }
 
 
-function createOtherMessage(message){
+function createMyMessage(message){
 	var li = document.createElement("li");
 	li.className+=" clearfix ";
 	var div1=document.createElement("div");
@@ -60,7 +85,7 @@ function createOtherMessage(message){
 	sname.innerHTML=message.sendName;  //发送者姓名
 	var sdate=document.createElement("span");
 	sdate.className+=' message-data-time ';
-	sdate.innerHTML=message.sendTime;
+	sdate.innerHTML=message.sendTime+"&nbsp&nbsp";
 	div1.appendChild(sdate);
 	div1.appendChild(sname);
 	var div2=document.createElement("div");
@@ -68,4 +93,5 @@ function createOtherMessage(message){
 	div2.innerHTML=message.content;
 	li.appendChild(div1);
 	li.appendChild(div2);
+	return li;
 }
