@@ -6,10 +6,9 @@ function register() {
 	var password = document.getElementById("password1").value;
 	var code = document.getElementById("code").value;
 	var data='{"email":"'+email+'","password":"'+password+'","code":"'+code+'"}';
-	var result=ajaxJson(data);
-	if(result!=false){
-		window.location.href="login.html";
-	}
+	ajaxJson(data);
+	
+	
 }
 function login(){
 	if(!checkLogInput()){
@@ -18,9 +17,35 @@ function login(){
 	var email=document.getElementById("lemail").value;
 	var password=document.getElementById("lpassword").value;
 	var data='{"email":"'+email+'","password":"'+password+'"}';
-	var result=ajaxJson(data);
-	if(result!=false){
-		window.location.href="MainChat.html";
+	ajaxJson(data);
+}
+function ale(stateCode){
+	switch (stateCode.state){
+		case 1000:
+			window.location.href="login.html";
+			return true;
+		break;
+		case 1001:
+		 	window.location.href="MainChat.html";
+		 	return false;
+		break;
+		case 1002:
+			alert("用户名不存在!");
+			return false;
+		break;
+		case 1003;
+			alert("密码错误!");
+			
+			return false;
+		break;
+		case 1004:
+			alert("用户已存在!");
+			return false;
+		break;
+		default:
+			alert("网络错误");
+			return false;
+		break;
 	}
 }
 function ajaxJson(data){
@@ -34,13 +59,14 @@ function ajaxJson(data){
 			if(request.status === 200) {
 				cosole.log(request.responseText);
 				var data = JSON.parse(request.responseText);
-				return data;
+				if(!ale(result)){
+					retrurn ;
+				}
+				
 			} else {
-				alert("网络错误 !");
 				return false;
 			}
 		} else {
-			alert("网络错误！");
 			return false;
 		}
 	}
