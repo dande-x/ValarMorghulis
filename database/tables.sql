@@ -1,10 +1,10 @@
-CREATE DATABASE  IF NOT EXISTS `vmdb`;
-USE `vmdb`;
+CREATE DATABASE  IF NOT EXISTS `shoop`;
+USE `shoop`;
 
 -- 创建一个专门管理的用户，赋予仅管理该数据库的权限
 
-GRANT ALL ON cuthanddb TO 'vmdbadmin'@'%' IDENTIFIED BY '';
-FLUSH PRIVILEGE;
+-- GRANT ALL ON cuthanddb TO 'vmdbadmin'@'%' IDENTIFIED BY '';
+-- FLUSH PRIVILEGE;
 
 DROP TABLE IF EXISTS `users`;
 DROP TABLE IF EXISTS `online`;
@@ -22,8 +22,8 @@ CREATE TABLE `users` (
   `password` CHAR(32) NOT NULL,
   `sex` ENUM("男","女","保密") NOT NULL DEFAULT "保密",
   `udeclare` VARCHAR(60) NOT NULL DEFAULT "个人说明。", 
-  `avatar` VARCHAR(50) NOT NULL DEFAULT "url",  
-  `regtime` TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `avatar` VARCHAR(50) NOT NULL DEFAULT "default.jpg",  
+  `regtime` TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP
   
 )ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -33,8 +33,8 @@ CREATE TABLE `users` (
 CREATE TABLE `emails`(
 	`email` VARCHAR(32) NOT NULL,
 	`code` VARCHAR(20) NOT NULL,
-	`type` ENUM(0,1,2) NOT NULL,
-	`time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	`type` ENUM('0','1','2') NOT NULL,
+	`time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	UNIQUE KEY (`email`,`type`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- type 0:注册 1:修改密码 2:忘记密码 
@@ -75,9 +75,9 @@ CREATE TABLE `online`(
 CREATE TABLE `friends`(
   `userId` INT UNSIGNED NOT NULL,
   `friendId` INT UNSIGNED NOT NULL,
-  `remarkName` CHAR(16) DEFAULT '',
   `ctime` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  INDEX (`userId`);
+  INDEX (`userId`),
+  UNIQUE(`userId`,`friendId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- 好友，双方互为好友时，是两条记录。
 

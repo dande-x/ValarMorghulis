@@ -7,6 +7,10 @@
 <link type="text/css" rel="stylesheet" href="css/reset.css">
 <link type="text/css" rel="stylesheet" href="css/main.css">
 <script type="text/javascript" src="js/func.js"></script>
+<script type="text/javascript" src="js/login.js"></script>
+<script>
+	init();
+</script>
 <!--[if IE 6]>
 <script type="text/javascript" src="js/DD_belatedPNG_0.0.8a-min.js"></script>
 <script type="text/javascript" src="js/ie6Fixpng.js"></script>
@@ -38,8 +42,8 @@
 			<li class="l_tit" style="font-size:20px">&nbsp;</li>
 			<li class="l_tit" style="font-size:20px">密码:</li>
 			<li class="mb_10"><input type="password" id="lpassword" name="password" maxlength="16" class="login_input user_icon"></li>
-			<li class="autoLogin"><input type="checkbox" id="autoLogin" class="checked"><label for="a1">自动登陆</label></li>
-			<li><button type="submit" onclick="login()" value="登陆" class="reg_btn" style="width:80px; height:30px">登陆</button></li>
+			<li class="autoLogin"><input type="checkbox" id="autoLogin" class="checked"><label for="a1">一周自动登陆</label></li>
+			<li><button type="submit" onclick="login()" value="登陆" class="reg_btn" style="width:80px; height:30px">登陆</button>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="submit" onclick="turnRegister()" class="reg_btn" style="width:80px; height:30px">注册</button></li>
 		</ul>
 		<div class="login_partners">
 			<p class="l_tit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用合作方账号登陆网站</p>
